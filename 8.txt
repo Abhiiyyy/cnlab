@@ -1,0 +1,64 @@
+import java.util.Scanner;
+
+public class BellmanFord 
+{
+	int d[],n;
+	public BellmanFord(int n) 
+	{
+		this.n = n;
+		d = new int[n + 1];
+	}
+
+private void shortest(int source, int[][] a) 
+	{
+		for(int k = 1; k <= n; k++)
+			d[k] = 999;
+		d[source] = 0;
+		
+		for(int k = 1; k <= n-1; k++) 
+			for(int i=1; i <= n; i++)
+				for(int j = 1;j <= n; j++)
+					if(a[i][j] != 999)
+						if(d[j] > d[i]+a[i][j])
+							d[j] = d[i]+a[i][j];
+		
+		for(int i = 1; i <= n; i++)
+			for(int j = 1; j <= n; j++)
+				if(d[j] > d[i]+a[i][j])
+					System.out.println("-ve cycle");
+		
+		for(int vertex = 1; vertex <= n; vertex++)
+			System.out.println( source+" to "+ vertex +" is "+ d[vertex] );
+	}
+
+
+	
+	public static void main(String[] args) 
+	{
+		int n,source;
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter the number of vertices:");
+		n = s.nextInt();
+		
+		int a[][] = new int[n + 1][n + 1];
+		System.out.println("Enter the adjacency matrix:");
+		for(int i = 1; i <= n; i++) {
+			for(int j = 1; j <= n; j++) {
+				a[i][j] = s.nextInt();
+				if(i == j) {
+					a[i][j] = 0;
+					continue;
+				}
+				if(a[i][j] == 0)
+					a[i][j] = 999;
+			}
+		}
+		
+		System.out.println("Enter src vertex:");		
+		source = s.nextInt();
+		BellmanFord b = new BellmanFord(n);
+		b.shortest(source,a);
+	}
+	
+	
+}
